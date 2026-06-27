@@ -1,0 +1,76 @@
+# Build results
+bin/
+obj/
+
+# User-specific files
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio
+.vs/
+
+# Visual Studio Code
+.vscode/
+
+# Rider
+.idea/
+
+# JetBrains Rider caches
+*.sln.iml
+
+# Logs
+*.log
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# IIS Express
+/.vs/
+/iisexpress/
+
+# Publish output
+publish/
+*.pubxml.user
+
+# NuGet
+*.nupkg
+packages/
+!packages/build/
+!packages/repositories.config
+
+# Test Results
+TestResults/
+*.trx
+
+# Coverage reports
+coverage/
+coverage.*
+*.coverage
+*.coveragexml
+
+# Generated files
+Generated/
+
+# Entity Framework
+*.mdf
+*.ldf
+
+# Local databases
+*.db
+*.db-shm
+*.db-wal
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env
+.env.*
+
+# Secrets
+appsettings.Development.json
+secrets.json
