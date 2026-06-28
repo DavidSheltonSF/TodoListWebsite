@@ -1,5 +1,6 @@
 using backend.Repositories;
 using backend.Services;
+using Microsoft.AspNetCore.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +24,32 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseExceptionHandler((errorApp) =>
+{
+    errorApp.Run(async context =>
+    {
+        var exception = context.Features.Get<IExceptionHandlerFeature>()?.Error;
+
+
+        switch (exception)
+        {
+            case KeyNotFoundException:
+                context.Response.StatusCode = StatusCodes.Status404NotFound;
+                break;
+
+            default:
+                context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                break;
+        }
+
+        await context.Response.WriteAsJsonAsync(new
+        {
+            message = exception?.Message
+        });
+
+    });
+});
 
 app.MapControllers();
 
