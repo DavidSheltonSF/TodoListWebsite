@@ -1,3 +1,6 @@
+using backend.Dtos;
+using backend.Models;
+
 interface TodoRepository
 {
   List<Todo> GetAll();
