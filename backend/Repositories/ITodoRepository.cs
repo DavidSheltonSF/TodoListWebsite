@@ -7,5 +7,5 @@ public interface ITodoRepository
   Todo? GetById(int id);
   Todo Add(Todo todo);
   Todo? Update(Todo todo);
-  Todo? Delete(int id);
+  void Delete(int id);
 }
