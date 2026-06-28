@@ -2,7 +2,7 @@ namespace backend.Repositories;
 using backend.Dtos;
 using backend.Models;
 
-interface TodoRepository
+interface ITodoRepository
 {
   List<Todo> GetAll();
   Todo GetById(string id);
