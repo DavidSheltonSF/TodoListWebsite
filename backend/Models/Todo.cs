@@ -1,6 +1,6 @@
 public class Todo
 {
-  int Id { get; set; }
-  string Title { get; set; } = "";
-  bool IsCompleted { get; set; }
+  public int Id { get; set; }
+  public string Title { get; set; } = "";
+  public bool IsCompleted { get; set; }
 }
