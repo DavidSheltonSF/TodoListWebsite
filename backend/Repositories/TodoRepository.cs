@@ -3,7 +3,7 @@ using backend.Models;
 
 public class TodoRepository : ITodoRepository
 {
-  private readonly List<Todo> _todos = [];
+  private static readonly List<Todo> _todos = [];
   public IEnumerable<Todo> GetAll()
   {
     return _todos;
@@ -18,6 +18,8 @@ public class TodoRepository : ITodoRepository
   {
     todo.Id = _todos.Count;
     _todos.Add(todo);
+    Console.WriteLine(todo.Title);
+    Console.WriteLine(_todos.ToString());
     return todo;
   }
 
