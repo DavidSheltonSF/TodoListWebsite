@@ -14,9 +14,11 @@ public class TodoService(ITodoRepository repository) : ITodoService
     return _repository.GetAll();
   }
 
-  public Todo? GetById(int id)
+  public Todo GetById(int id)
   {
-    return _repository.GetById(id);
+    var todo = _repository.GetById(id)
+    ?? throw new KeyNotFoundException($"Todo with id {id} was not found");
+    return todo;
   }
 
   public Todo Create(CreateTodoDto data)
@@ -33,7 +35,7 @@ public class TodoService(ITodoRepository repository) : ITodoService
   public Todo Update(int id, UpdateTodoDto data)
   {
     var todo = GetById(id) ?? throw new KeyNotFoundException("Todo not found");
-    
+
     todo.Title = data.Title ?? todo.Title;
     todo.IsCompleted = data.IsCompleted ?? todo.IsCompleted;
 
