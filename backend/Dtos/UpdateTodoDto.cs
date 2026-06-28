@@ -2,5 +2,5 @@ namespace backend.Dtos;
 
 public class UpdateTodoDto
 {
-  string Title { get; set; } = "";
+  public string Title { get; set; } = "";
 }
