@@ -4,8 +4,8 @@ using backend.Models;
 public interface ITodoRepository
 {
   List<Todo> GetAll();
-  Todo GetById(string id);
+  Todo GetById(int id);
   Todo Add(Todo data);
   Todo? Update(Todo data);
-  Todo? Delete(string id);
+  Todo? Delete(int id);
 }
