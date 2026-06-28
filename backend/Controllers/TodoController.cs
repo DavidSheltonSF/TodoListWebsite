@@ -41,4 +41,10 @@ public class TodoController(ITodoService todoService) : ControllerBase
     _service.Delete(id);
     return NoContent();
   }
+
+  [HttpGet("stats")]
+  public IActionResult GetStats()
+  {
+    return Ok(_service.GetStats());
+  }
 }
