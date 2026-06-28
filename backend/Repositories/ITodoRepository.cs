@@ -3,7 +3,7 @@ using backend.Models;
 
 public interface ITodoRepository
 {
-  List<Todo> GetAll();
+  IEnumerable<Todo> GetAll();
   Todo? GetById(int id);
   Todo Add(Todo todo);
   Todo? Update(Todo todo);
