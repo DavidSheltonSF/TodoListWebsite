@@ -21,6 +21,11 @@ public class TodoService(ITodoRepository repository) : ITodoService
     return todo;
   }
 
+  public TodoStats GetStats()
+  {
+    return _repository.GetStats();
+  }
+
   public Todo Create(CreateTodoDto data)
   {
     var todo = new Todo
