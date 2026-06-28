@@ -1,4 +1,6 @@
 namespace backend.Repositories;
+
+using backend.Dtos;
 using backend.Models;
 
 public class TodoRepository : ITodoRepository
@@ -21,6 +23,14 @@ public class TodoRepository : ITodoRepository
     Console.WriteLine(todo.Title);
     Console.WriteLine(_todos.ToString());
     return todo;
+  }
+
+  public TodoStats GetStats()
+  {
+
+    return new TodoStats(_todos.Count,
+    _todos.Count((todo) => todo.IsCompleted == true),
+    _todos.Count((todo) => todo.IsCompleted == false));
   }
 
   public Todo? Update(Todo todo)
