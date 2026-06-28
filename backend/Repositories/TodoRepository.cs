@@ -16,6 +16,7 @@ public class TodoRepository : ITodoRepository
 
   public Todo Add(Todo todo)
   {
+    todo.Id = _todos.Count;
     _todos.Add(todo);
     return todo;
   }
