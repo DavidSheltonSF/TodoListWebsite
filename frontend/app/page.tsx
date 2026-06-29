@@ -15,6 +15,7 @@ export default async function Home() {
         <TaskStats.Item label="Done" value={todoStats?.done || 0} highlight/>
         <TaskStats.Item label="Remaining" value={todoStats?.remaining || 0}/>
        </TaskStats>
+       <div className="border-divider"></div>
      </header>
       </main>
     </div>
