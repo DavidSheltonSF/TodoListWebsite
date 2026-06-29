@@ -38,6 +38,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseCors();
+
 app.UseExceptionHandler((errorApp) =>
 {
     errorApp.Run(async context =>
