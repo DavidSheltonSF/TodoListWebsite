@@ -58,3 +58,6 @@ body {
   background-color: var(--color-green-dark);
 }
 
+.bg-color-green {
+  background-color: var(--color-green);
+}
