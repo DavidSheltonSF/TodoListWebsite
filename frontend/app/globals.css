@@ -4,7 +4,12 @@
   --color-black: #0f0f11;
   --color-white: #e8e4dc;
   --color-green: #6dffb3;
+  --color-green-light: #8af8bf;
+  --color-green-dark: #307a54;
   --color-gray: #6b6b72;
+  --color-red: #9b2d2d;
+  --color-red-light: #df5d5d;
+  --color-red-dark: #2a1515;
 }
 
 body {
@@ -22,5 +27,32 @@ body {
   background-color: var(--color-gray);
   opacity: 30%;
   filter: blur(0.3px);
-  
+}
+
+.border-red-soft {
+ border: 1px solid var(--color-red);
+}
+
+.border-green-soft {
+ border: 1px solid var(--color-green);
+}
+
+.border-gray-soft {
+ border: 1px solid var(--color-gray);
+}
+
+.text-red {
+  color: var(--color-red-light)
+}
+
+.text-green {
+  color: var(--color-green-light)
+}
+
+.bg-color-red-dark {
+  background-color: var(--color-red-dark);
+}
+
+.bg-color-green-dark {
+  background-color: var(--color-green-dark);
 }
