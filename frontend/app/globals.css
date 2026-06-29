@@ -4,10 +4,15 @@
   --color-black: #0f0f11;
   --color-white: #e8e4dc;
   --color-green: #6dffb3;
+  --color-gray: #6b6b72;
 }
 
 body {
   font-family: Arial, Helvetica, sans-serif;
   background-color: var(--color-black);
   color: var(--color-white);
+}
+
+.text-muted {
+  color: var(--color-gray);
 }
