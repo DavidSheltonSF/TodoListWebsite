@@ -17,6 +17,6 @@ export function RequestStatusBar({requestState}: Props){
 
   return  <div className={`flex justify-center items-center w-full rounded-md mt-[24px]
   py-[16px] ${requestState.status === 'error' ? errorStyles : successStyles}`}>
-    {requestState.status === 'error' ? "Couldn't reach the API" : 'API reached successfuly'}
+    {requestState.status === 'error' ? requestState.message : 'API reached successfuly'}
   </div>
 }
