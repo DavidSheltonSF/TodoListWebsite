@@ -7,6 +7,7 @@
   --color-green-light: #8af8bf;
   --color-green-dark: #307a54;
   --color-gray: #6b6b72;
+  --color-gray-dark: #1f1f24;
   --color-red: #9b2d2d;
   --color-red-light: #df5d5d;
   --color-red-dark: #2a1515;
@@ -56,3 +57,4 @@ body {
 .bg-color-green-dark {
   background-color: var(--color-green-dark);
 }
+
