@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { TaskStats } from "./TaskStats";
 import { RequestState } from "../types/RequestState";
 import { RequestStatusBar } from "./RequestStatusBar";
@@ -8,9 +8,10 @@ import { getTodos } from "../services/getTodos";
 import { deleteTodo } from "../services/deleteTodo";
 import { AddIcon } from "./icons/AddIcon";
 import { TodoList } from "./TodoList";
+import { createTodo } from "../services/createTodo";
 
 export function TodoArea() {
- const [todos, setTodos] = useState<Todo[]>([])
+  const [todos, setTodos] = useState<Todo[]>([]);
   const [requestState, setRequestState] = useState<RequestState>({status: 'loading'});
 
   useEffect(() => {
@@ -27,6 +28,21 @@ export function TodoArea() {
    loadTodos();
   }, []);
 
+  async function handleCreateTodo(e: any){
+    try {
+      e.preventDefault();
+      const data = new FormData(e.currentTarget);
+      const title = data.get('todoTitle');
+      if(!title) return;
+      setRequestState({status: 'loading'});
+      const todo = await createTodo(title.toString());
+      setRequestState({status: 'ok'});
+      setTodos(prev => ([...prev, todo]));
+    } catch (error: any) {
+      setRequestState({status: 'error', message: error.message});
+    }
+    
+  }
 
   async function handleDelete(id: number) {
     const copy = todos;
@@ -58,9 +74,9 @@ export function TodoArea() {
       <RequestStatusBar requestState={requestState}/>
      </header>
      <div className="flex flex-col gap-[24px]">
-      <form className="flex gap-[16px]" action="">
-        <input type="text" className="bg-color-gray-dark w-full rounded-md py-[8px] border border-[var(--color-gray)] focus:border-[var(--color-green)] transition-[border] duration-300"/>
-        <button className="p-[8px] bg-color-green rounded-md cursor-pointer hover:brightness-110 transition-[filter] duration-300 ">
+      <form className="flex gap-[16px]" onSubmit={handleCreateTodo}>
+        <input name='todoTitle' type="text" className="bg-color-gray-dark w-full rounded-md py-[8px] border border-[var(--color-gray)] focus:border-[var(--color-green)] transition-[border] duration-300"/>
+        <button type="submit" className="p-[8px] bg-color-green rounded-md cursor-pointer hover:brightness-110 transition-[filter] duration-300 ">
           <AddIcon className="stroke-black size-[24px]"/>
         </button>
       </form>
