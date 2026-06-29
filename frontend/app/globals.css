@@ -16,3 +16,11 @@ body {
 .text-muted {
   color: var(--color-gray);
 }
+
+.border-divider {
+  height: 1px;
+  background-color: var(--color-gray);
+  opacity: 30%;
+  filter: blur(0.3px);
+  
+}
