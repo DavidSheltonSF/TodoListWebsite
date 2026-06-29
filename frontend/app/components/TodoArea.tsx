@@ -12,6 +12,7 @@ import { createTodo } from "../services/createTodo";
 
 export function TodoArea() {
   const [todos, setTodos] = useState<Todo[]>([]);
+  const [todoTitle, setTodoTitle] = useState("");
   const [requestState, setRequestState] = useState<RequestState>({status: 'loading'});
 
   useEffect(() => {
@@ -36,6 +37,7 @@ export function TodoArea() {
       if(!title) return;
       setRequestState({status: 'loading'});
       const todo = await createTodo(title.toString());
+      setTodoTitle("");
       setRequestState({status: 'ok'});
       setTodos(prev => ([...prev, todo]));
     } catch (error: any) {
@@ -75,7 +77,10 @@ export function TodoArea() {
      </header>
      <div className="flex flex-col gap-[24px]">
       <form className="flex gap-[16px]" onSubmit={handleCreateTodo}>
-        <input name='todoTitle' type="text" className="bg-color-gray-dark w-full rounded-md py-[8px] border border-[var(--color-gray)] focus:border-[var(--color-green)] transition-[border] duration-300"/>
+        <input 
+        value={todoTitle} 
+        onChange={(e) => setTodoTitle(e.target.value)} 
+        name='todoTitle' type="text" className="bg-color-gray-dark w-full rounded-md py-[8px] border border-[var(--color-gray)] focus:border-[var(--color-green)] transition-[border] duration-300"/>
         <button type="submit" className="p-[8px] bg-color-green rounded-md cursor-pointer hover:brightness-110 transition-[filter] duration-300 ">
           <AddIcon className="stroke-black size-[24px]"/>
         </button>
