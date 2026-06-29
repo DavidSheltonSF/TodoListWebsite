@@ -5,6 +5,7 @@ import { RequestState } from "../types/RequestState";
 import { RequestStatusBar } from "./RequestStatusBar";
 import { Todo } from "../types/Todo";
 import { getTodos } from "../services/getTodos";
+import { deleteTodo } from "../services/deleteTodo";
 
 export function TodoArea() {
  const [todos, setTodos] = useState<Todo[]>([])
@@ -23,6 +24,22 @@ export function TodoArea() {
   }
    loadTodos();
   }, []);
+
+
+  async function handleDelete(id: number) {
+    const copy = todos;
+    try {
+      setTodos((prev) => prev.filter((todo) => todo.id != id));
+      await deleteTodo(id);
+      setRequestState({status: 'ok'});
+      return true;
+    } catch(error: any) {
+      console.log(error)
+      setTodos(copy)
+      setRequestState({status: 'error', message: error.message});
+      return false;
+    }
+  }
 
   const todoDone = todos.filter((todo) => todo.isCompleted === true);
   const todoRemaining = todos.filter((todo) => todo.isCompleted === false);
