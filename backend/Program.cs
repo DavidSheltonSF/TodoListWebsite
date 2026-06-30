@@ -22,7 +22,7 @@ builder.Services.AddCors(options =>
         policy
         .WithOrigins(
             "http://localhost:3001",
-            "https://todolistwebsite-frontend.onrender.com/"
+            "https://todolistwebsite-frontend.onrender.com"
         )
         .AllowAnyHeader()
         .AllowAnyMethod();
