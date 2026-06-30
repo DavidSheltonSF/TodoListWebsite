@@ -9,6 +9,7 @@ import { deleteTodo } from "../services/deleteTodo";
 import { AddIcon } from "./icons/AddIcon";
 import { TodoList } from "./TodoList";
 import { createTodo } from "../services/createTodo";
+import { toggleTodo } from "../services/toggleTodo";
 
 export function TodoArea() {
   const [todos, setTodos] = useState<Todo[]>([]);
@@ -61,6 +62,19 @@ export function TodoArea() {
     }
   }
 
+  async function handleToggleTodo(id: number){
+    try {
+      const updatedTodo = await toggleTodo(id);
+      setTodos((prev) => prev.map((t) => (t.id === id ? updatedTodo : t)));
+      setRequestState({status: 'ok'});
+      return true;
+    } catch(error: any) {
+      console.log(error)
+      setRequestState({status: 'error', message: error.message});
+      return false;
+    }
+  }
+
   const todoDone = todos.filter((todo) => todo.isCompleted === true);
   const todoRemaining = todos.filter((todo) => todo.isCompleted === false);
 
@@ -85,7 +99,7 @@ export function TodoArea() {
           <AddIcon className="stroke-black size-[24px]"/>
         </button>
       </form>
-      <TodoList todos={todos} onDelete={handleDelete}/>
+      <TodoList todos={todos} onDelete={handleDelete} onToggleChecked={handleToggleTodo}/>
      </div>
   </div>
 }
