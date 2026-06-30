@@ -12,9 +12,6 @@ export function TodoList({todos, onDelete, onToggleCompletion}: Props){
     return <TodoItem key={todo.id} todo={todo} onDelete={onDelete} onToggleCompletion={onToggleCompletion}/>
   })
 
-  
-
-
   return <div className="flex flex-col gap-[8px] min-h-[200px]">
     {
     todos.length > 0 
