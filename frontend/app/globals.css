@@ -72,3 +72,18 @@ body {
 .text-color-green-light {
   color: var(--color-green-light)
 }
+
+/* Animations */
+@keyframes fade-in {
+  from {
+    opacity: 10%;
+  }
+  
+  to {
+    opacity: 100%;
+  }
+}
+
+.fade-in-animation {
+  animation: fade-in 500ms normal ease;
+}
