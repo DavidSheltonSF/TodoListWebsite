@@ -48,10 +48,17 @@ public class TodoService(ITodoRepository repository) : ITodoService
     return todo;
   }
 
+  public Todo ToggleCompletion(int id)
+  {
+    var todo = GetById(id) ?? throw new KeyNotFoundException("Todo not found");
+    todo.IsCompleted = !todo.IsCompleted;
+    return todo;
+  }
+
   public void Delete(int id)
-{
-  if(GetById(id) == null)
-    throw new KeyNotFoundException("Todo not found");
+  {
+    if (GetById(id) == null)
+      throw new KeyNotFoundException("Todo not found");
 
     _repository.Delete(id);
   }

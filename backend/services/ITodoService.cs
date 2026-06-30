@@ -10,5 +10,6 @@ public interface ITodoService
   TodoStats GetStats();
   Todo Create(CreateTodoDto data);
   Todo Update(int id, UpdateTodoDto data);
+  Todo ToggleCompletion(int id);
   void Delete(int id);
 }
