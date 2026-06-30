@@ -11,7 +11,16 @@ export function TodoList({todos, onDelete, onToggleCompletion}: Props){
   const renderTodos = todos.map((todo) => {
     return <TodoItem key={todo.id} todo={todo} onDelete={onDelete} onToggleCompletion={onToggleCompletion}/>
   })
+
+  
+
+
   return <div className="flex flex-col gap-[8px]">
-    {renderTodos}
+    {
+    todos.length > 0 
+    ? renderTodos
+    : <div className="flex justify-center items-center size-full">
+      <span className="text-muted">Add your first task above</span>
+      </div>}
   </div>
 }
