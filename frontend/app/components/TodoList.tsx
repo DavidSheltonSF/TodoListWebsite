@@ -15,7 +15,7 @@ export function TodoList({todos, onDelete, onToggleCompletion}: Props){
   
 
 
-  return <div className="flex flex-col gap-[8px]">
+  return <div className="flex flex-col gap-[8px] min-h-[200px]">
     {
     todos.length > 0 
     ? renderTodos
