@@ -83,7 +83,7 @@ export function TodoArea() {
        <h1 className="text-5xl">Todo-do</h1>
        <TaskStats>
         <TaskStats.Item label="Todos" value={todos.length}/>
-        <TaskStats.Item label="Done" value={todoDone.length}/>
+        <TaskStats.Item label="Done" value={todoDone.length} highlight/>
         <TaskStats.Item label="Remaining" value={todoRemaining.length}/>
        </TaskStats>
        <div className="border-divider"></div>
