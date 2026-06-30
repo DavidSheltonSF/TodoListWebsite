@@ -94,7 +94,7 @@ export function TodoArea() {
         <input 
         value={todoTitle} 
         onChange={(e) => setTodoTitle(e.target.value)} 
-        name='todoTitle' type="text" className="bg-color-gray-dark w-full rounded-md py-[8px] border border-[var(--color-gray)] focus:border-[var(--color-green)] transition-[border] duration-300"/>
+        name='todoTitle' type="text" className="bg-color-gray-dark w-full rounded-md p-[8px] border border-[var(--color-gray)] focus:border-[var(--color-green)] transition-[border] duration-300"/>
         <button type="submit" className="p-[8px] bg-color-green rounded-md cursor-pointer hover:brightness-110 transition-[filter] duration-300 ">
           <AddIcon className="stroke-black size-[24px]"/>
         </button>
