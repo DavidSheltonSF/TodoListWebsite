@@ -35,6 +35,14 @@ public class TodoController(ITodoService todoService) : ControllerBase
     return Ok(_service.Update(id, data));
   }
 
+  [HttpPut("toggleCompletion/{id}")]
+  public IActionResult TogleCompletion(int id)
+  {
+    var todo = _service.ToggleCompletion(id);
+    Console.WriteLine(todo.Title);
+    return Ok(todo);
+  }
+
   [HttpDelete("{id}")]
   public IActionResult Delete(int id)
   {
