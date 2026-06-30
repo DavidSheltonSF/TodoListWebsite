@@ -1,0 +1,1 @@
+export type TodoFilterValue = "all" | "done" | "remaining";
