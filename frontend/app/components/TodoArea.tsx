@@ -99,7 +99,7 @@ export function TodoArea() {
           <AddIcon className="stroke-black size-[24px]"/>
         </button>
       </form>
-      <TodoList todos={todos} onDelete={handleDelete} onToggleChecked={handleToggleTodo}/>
+      <TodoList todos={todos} onDelete={handleDelete} onToggleCompletion={handleToggleTodo}/>
      </div>
   </div>
 }
