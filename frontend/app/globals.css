@@ -69,3 +69,7 @@ body {
 .bg-color-gray-dark {
   background-color: var(--color-gray-dark);
 }
+
+.text-color-green-light {
+  color: var(--color-green-light)
+}
