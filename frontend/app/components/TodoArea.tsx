@@ -10,11 +10,14 @@ import { AddIcon } from "./icons/AddIcon";
 import { TodoList } from "./TodoList";
 import { createTodo } from "../services/createTodo";
 import { toggleTodo } from "../services/toggleTodo";
+import { TodoFilterValue } from "../types/TodoFilterValue";
+import { TodoFilter } from "./TodoFilter";
 
 export function TodoArea() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [todoTitle, setTodoTitle] = useState("");
   const [requestState, setRequestState] = useState<RequestState>({status: 'loading'});
+  const [filterValue, setFilterValue] = useState<TodoFilterValue>("all")
 
   useEffect(() => {
    async function loadTodos(){
@@ -77,6 +80,7 @@ export function TodoArea() {
 
   const todoDone = todos.filter((todo) => todo.isCompleted === true);
   const todoRemaining = todos.filter((todo) => todo.isCompleted === false);
+  const todosFiltered = filterValue === 'done' ? todoDone : todoRemaining;
 
  return <div className="flex flex-col gap-[24px] w-full">
       <header className="flex flex-col w-full gap-">
@@ -90,6 +94,7 @@ export function TodoArea() {
       <RequestStatusBar requestState={requestState}/>
      </header>
      <div className="flex flex-col gap-[24px]">
+      <TodoFilter selectedValue={filterValue} updateFilter={(value) => setFilterValue(value)}/>
       <form className="flex gap-[16px]" onSubmit={handleCreateTodo}>
         <input 
         value={todoTitle} 
@@ -99,7 +104,7 @@ export function TodoArea() {
           <AddIcon className="stroke-black size-[24px]"/>
         </button>
       </form>
-      <TodoList todos={todos} onDelete={handleDelete} onToggleCompletion={handleToggleTodo}/>
+      <TodoList todos={filterValue === "all" ? todos : todosFiltered} onDelete={handleDelete} onToggleCompletion={handleToggleTodo}/>
      </div>
   </div>
 }
