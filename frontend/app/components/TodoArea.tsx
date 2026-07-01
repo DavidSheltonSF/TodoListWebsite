@@ -1,5 +1,5 @@
 'use client';
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { TaskStats } from "./TaskStats";
 import { RequestState } from "../types/RequestState";
 import { RequestStatusBar } from "./RequestStatusBar";
@@ -15,7 +15,6 @@ import { TodoFilter } from "./TodoFilter";
 
 export function TodoArea() {
   const [todos, setTodos] = useState<Todo[]>([]);
-  const [todosTempCopy, setTodosTempCopy] = useState<Todo[]>([])
   const [todoTitle, setTodoTitle] = useState("");
   const [requestState, setRequestState] = useState<RequestState>({status: 'loading'});
   const [filterValue, setFilterValue] = useState<TodoFilterValue>("all")
@@ -69,14 +68,16 @@ export function TodoArea() {
   }
 
   async function handleToggleTodo(id: number){
-    const copy = todos;
+    const todoCopy = todos.find((todo) => todo.id === id);
+    if(!todoCopy) return;
+
     try {
       setTodos((prev) => prev.map((t) => (t.id === id ? {...t, isCompleted: !t.isCompleted} : t)));
       await toggleTodo(id);
       return true;
     } catch(error: any) {
       console.log(error)
-      setTodos(copy)
+      setTodos((prev) => prev.map((t) => t.id === id ? todoCopy : t))
       setRequestState({status: 'error', message: `Couldn't update task: ${error.message}`});
       return false;
     }
