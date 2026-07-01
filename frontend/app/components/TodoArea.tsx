@@ -105,7 +105,11 @@ export function TodoArea() {
           <AddIcon className="stroke-black size-[24px]"/>
         </button>
       </form>
-      <TodoList todos={filterValue === "all" ? todos : todosFiltered} onDelete={handleDelete} onToggleCompletion={handleToggleTodo}/>
+      <TodoList 
+      todos={filterValue === "all" ? todos : todosFiltered} 
+      todoFilterValue={filterValue}
+      onDelete={handleDelete} 
+      onToggleCompletion={handleToggleTodo}/>
      </div>
   </div>
 }
