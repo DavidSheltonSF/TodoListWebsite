@@ -12,27 +12,30 @@ interface Props {
 export function TodoList({todos, todoFilterValue, onDelete, onToggleCompletion}: Props){
   const renderTodos = todos.map((todo) => {
     return <TodoItem key={todo.id} todo={todo} onDelete={onDelete} onToggleCompletion={onToggleCompletion}/>
-  })
+  });
 
-  var emptyListMessage = "Add your first task above";
-
-  switch(todoFilterValue) {
-    case 'done':
-      emptyListMessage = "Nothing completed yet";
-      break;
-
-    case 'remaining':
-      emptyListMessage = "All caught up!";
-      break;
-
+  const emptyState = {
+    all: {
+      sign: "○",
+      message:"Add your first task above"
+    },
+    done: {
+      sign: "✓",
+      message: "Nothing completed yet"
+    },
+    remaining: {
+      sign: "○",
+      message: "Add your first task above"
+    }
   }
 
   return <div className="flex flex-col gap-[8px] min-h-[200px]">
     {
     todos.length > 0 
     ? renderTodos
-    : <div className="flex justify-center items-center size-full">
-      <span className="text-muted">{emptyListMessage}</span>
+    : <div className="flex flex-col gap-[16px] justify-center items-center size-full">
+      <span className="text-muted text-5xl">{emptyState[todoFilterValue].sign}</span>
+      <span className="text-muted">{emptyState[todoFilterValue].message}</span>
       </div>}
   </div>
 }
