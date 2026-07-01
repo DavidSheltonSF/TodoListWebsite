@@ -1,5 +1,2 @@
 namespace backend.Dtos;
-public class CreateTodoDto
-{
-  public string Title { get; set; } = "";
-}
+public record CreateTodoDto(string Title);
