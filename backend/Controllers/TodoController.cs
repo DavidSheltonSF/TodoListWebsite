@@ -39,7 +39,6 @@ public class TodoController(ITodoService todoService) : ControllerBase
   public IActionResult TogleCompletion(int id)
   {
     var todo = _service.ToggleCompletion(id);
-    Console.WriteLine(todo.Title);
     return Ok(todo);
   }
 

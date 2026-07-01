@@ -20,8 +20,6 @@ public class TodoRepository : ITodoRepository
   {
     todo.Id = _todos.Count;
     _todos.Add(todo);
-    Console.WriteLine(todo.Title);
-    Console.WriteLine(_todos.ToString());
     return todo;
   }
 
