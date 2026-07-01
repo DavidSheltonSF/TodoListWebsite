@@ -15,6 +15,7 @@ import { TodoFilter } from "./TodoFilter";
 
 export function TodoArea() {
   const [todos, setTodos] = useState<Todo[]>([]);
+  const [todosTempCopy, setTodosTempCopy] = useState<Todo[]>([])
   const [todoTitle, setTodoTitle] = useState("");
   const [requestState, setRequestState] = useState<RequestState>({status: 'loading'});
   const [filterValue, setFilterValue] = useState<TodoFilterValue>("all")
@@ -51,7 +52,9 @@ export function TodoArea() {
   }
 
   async function handleDelete(id: number) {
-    const copy = todos;
+    const todoCopy = todos.find((todo) => todo.id === id);
+    if(!todoCopy) return;
+
     try {
       setTodos((prev) => prev.filter((todo) => todo.id != id));
       await deleteTodo(id);
@@ -59,7 +62,7 @@ export function TodoArea() {
       return true;
     } catch(error: any) {
       console.log(error)
-      setTodos(copy)
+      setTodos((prev) => ([...prev, todoCopy]))
      setRequestState({status: 'error', message: `Couldn't delete task: ${error.message}`});
       return false;
     }
