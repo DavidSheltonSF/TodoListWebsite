@@ -1,58 +1,64 @@
 namespace backend.Repositories;
 
+using backend.Database;
 using backend.Dtos;
 using backend.Models;
+using Microsoft.EntityFrameworkCore;
 
-public class TodoRepository : ITodoRepository
+public class TodoRepository(TodoDbContext context) : ITodoRepository
 {
-  private static readonly List<Todo> _todos = [];
-  public IEnumerable<Todo> GetAll()
+  private readonly TodoDbContext _context = context;
+
+  async public Task<IEnumerable<Todo>> GetAll()
   {
-    return _todos;
+    return await _context.Todos.ToListAsync();
   }
 
-  public Todo? GetById(int id)
+ async public Task<Todo?> GetById(int id)
   {
-    return _todos.FirstOrDefault((todo) => todo.Id == id);
+    return await _context.Todos.FirstOrDefaultAsync((todo) => todo.Id == id);
   }
 
-  public Todo Add(Todo todo)
+  async public Task<Todo> Add(Todo todo)
   {
-    todo.Id = _todos.Count;
-    _todos.Add(todo);
+    await _context.Todos.AddAsync(todo);
+    await _context.SaveChangesAsync();
     return todo;
   }
 
-  public TodoStats GetStats()
+ async public Task<TodoStats> GetStats()
   {
-
-    return new TodoStats(_todos.Count,
-    _todos.Count((todo) => todo.IsCompleted == true),
-    _todos.Count((todo) => todo.IsCompleted == false));
+    var all = await _context.Todos.CountAsync();
+    var done = await _context.Todos.CountAsync((todo) => todo.IsCompleted);
+    return new TodoStats(
+      all,
+      done,
+      all - done
+    );
   }
 
-  public Todo? Update(Todo todo)
+  async public Task<Todo?> Update(Todo todo)
   {
-    var existingTodo = GetById(todo.Id);
+  
+    var existingTodo = await _context.Todos.FindAsync(todo.Id);
 
     if (existingTodo == null)
     {
       return null;
     }
-
-
+    
     existingTodo.Title = todo.Title;
     existingTodo.IsCompleted = todo.IsCompleted;
+
+    await _context.SaveChangesAsync();
 
     return existingTodo;
   }
 
-  public void Delete(int id)
+  async public Task Delete(int id)
   {
-
-    var todo = GetById(id);
-
-    if (todo != null)
-      _todos.Remove(todo);
+    var todo = await _context.Todos.FindAsync(id) ?? throw new KeyNotFoundException("Todo not found");
+    _context.Todos.Remove(todo);
+    await _context.SaveChangesAsync();
   }
 }

@@ -5,10 +5,10 @@ using backend.Models;
 
 public interface ITodoRepository
 {
-  IEnumerable<Todo> GetAll();
-  Todo? GetById(int id);
-  TodoStats GetStats();
-  Todo Add(Todo todo);
-  Todo? Update(Todo todo);
-  void Delete(int id);
+  Task<IEnumerable<Todo>> GetAll();
+  Task<Todo?> GetById(int id);
+  Task<TodoStats> GetStats();
+  Task<Todo> Add(Todo todo);
+  Task<Todo?> Update(Todo todo);
+  Task Delete(int id);
 }
