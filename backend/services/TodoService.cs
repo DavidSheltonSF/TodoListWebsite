@@ -31,7 +31,8 @@ public class TodoService(ITodoRepository repository) : ITodoService
     var todo = new Todo
     {
       Title = data.Title,
-      IsCompleted = false
+      IsCompleted = false,
+      CreatedAt = DateOnly.FromDateTime(DateTime.Now)
     };
 
     return await _repository.Add(todo);
