@@ -50,9 +50,11 @@ public class TodoService(ITodoRepository repository) : ITodoService
 
   async public Task<Todo> ToggleCompletion(int id)
   {
-    var todo = await GetById(id) ?? throw new KeyNotFoundException("Todo not found");
-    todo.IsCompleted = !todo.IsCompleted;
-    return todo;
+    var existingTodo = await GetById(id) ?? throw new KeyNotFoundException("Todo not found");
+
+    var data = new UpdateTodoDto(Title: existingTodo.Title, IsCompleted: !existingTodo.IsCompleted );
+    await Update(id, data);
+    return existingTodo;
   }
 
   async public Task Delete(int id)
