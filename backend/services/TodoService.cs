@@ -32,7 +32,7 @@ public class TodoService(ITodoRepository repository) : ITodoService
     {
       Title = data.Title,
       IsCompleted = false,
-      CreatedAt = DateOnly.FromDateTime(DateTime.Now)
+      CreatedAt = DateTimeOffset.UtcNow
     };
 
     return await _repository.Add(todo);
