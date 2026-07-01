@@ -66,13 +66,14 @@ export function TodoArea() {
   }
 
   async function handleToggleTodo(id: number){
+    const copy = todos;
     try {
-      const updatedTodo = await toggleTodo(id);
-      setTodos((prev) => prev.map((t) => (t.id === id ? updatedTodo : t)));
-      setRequestState({status: 'ok'});
+      setTodos((prev) => prev.map((t) => (t.id === id ? {...t, isCompleted: !t.isCompleted} : t)));
+      await toggleTodo(id);
       return true;
     } catch(error: any) {
       console.log(error)
+      setTodos(copy)
       setRequestState({status: 'error', message: error.message});
       return false;
     }
