@@ -11,47 +11,47 @@ public class TodoController(ITodoService todoService) : ControllerBase
   private readonly ITodoService _service = todoService;
 
   [HttpGet]
-  public IActionResult GetAll()
+  async public Task<IActionResult> GetAll()
   {
-    return Ok(_service.GetAll());
+    return Ok(await _service.GetAll());
   }
 
   [HttpGet("{id}")]
-  public IActionResult GetById(int id)
+  async public Task<IActionResult> GetById(int id)
   {
-    var todo = _service.GetById(id);
+    var todo = await _service.GetById(id);
     return Ok(todo);
   }
 
   [HttpPost]
-  public IActionResult Create(CreateTodoDto data)
+  async  public Task<IActionResult> Create(CreateTodoDto data)
   {
-    return Ok(_service.Create(data));
+    return Ok(await _service.Create(data));
   }
 
   [HttpPatch("{id}")]
-  public IActionResult Update(int id, UpdateTodoDto data)
+  async public Task<IActionResult> Update(int id, UpdateTodoDto data)
   {
-    return Ok(_service.Update(id, data));
+    return Ok(await _service.Update(id, data));
   }
 
   [HttpPut("toggleCompletion/{id}")]
-  public IActionResult TogleCompletion(int id)
+  async public Task<IActionResult> TogleCompletion(int id)
   {
-    var todo = _service.ToggleCompletion(id);
+    var todo = await _service.ToggleCompletion(id);
     return Ok(todo);
   }
 
   [HttpDelete("{id}")]
-  public IActionResult Delete(int id)
+  async public Task<IActionResult> Delete(int id)
   {
-    _service.Delete(id);
+   await _service.Delete(id);
     return NoContent();
   }
 
   [HttpGet("stats")]
-  public IActionResult GetStats()
+  async public Task<IActionResult> GetStats()
   {
-    return Ok(_service.GetStats());
+    return Ok(await _service.GetStats());
   }
 }
