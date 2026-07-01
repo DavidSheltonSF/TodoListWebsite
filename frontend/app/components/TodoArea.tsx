@@ -27,7 +27,7 @@ export function TodoArea() {
       setRequestState({status: 'ok'})
     } catch (error: any) {
       console.log(error)
-      setRequestState({status: 'error', message: `Couldn't loas tasks: ${error.message}`});
+      setRequestState({status: 'error', message: `Couldn't load tasks: ${error.message}`});
     }
   }
    loadTodos();
