@@ -1,8 +1,12 @@
+using backend.Database;
 using backend.Repositories;
 using backend.Services;
 using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration["DATABASE_CONNECTION"] ?? throw new InvalidOperationException("Database string is note configured");
+builder.Services.AddDbContext<TodoDbContext>(options => options.UseNpgsql(connectionString));
 
 // Controllers
 builder.Services.AddControllers();
