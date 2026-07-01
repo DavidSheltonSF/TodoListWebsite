@@ -83,8 +83,14 @@ export function TodoArea() {
     }
   }
 
-  const todoDone = todos.filter((todo) => todo.isCompleted === true);
-  const todoRemaining = todos.filter((todo) => todo.isCompleted === false);
+  const sortedTodos = todos.slice().sort((a, b) => {
+    const aDate = new Date(a.createdAt)
+    const bDate = new Date(b.createdAt)
+    return bDate.getTime() - aDate.getTime();
+  })
+
+  const todoDone = sortedTodos.filter((todo) => todo.isCompleted === true);
+  const todoRemaining = sortedTodos.filter((todo) => todo.isCompleted === false);
   const todosFiltered = filterValue === 'done' ? todoDone : todoRemaining;
 
  return <div className="flex flex-col gap-[24px] w-full">
@@ -110,7 +116,7 @@ export function TodoArea() {
         </button>
       </form>
       <TodoList 
-      todos={filterValue === "all" ? todos : todosFiltered} 
+      todos={filterValue === "all" ? sortedTodos : todosFiltered} 
       todoFilterValue={filterValue}
       onDelete={handleDelete} 
       onToggleCompletion={handleToggleTodo}/>
