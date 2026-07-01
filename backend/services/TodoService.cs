@@ -9,24 +9,24 @@ public class TodoService(ITodoRepository repository) : ITodoService
 {
   private readonly ITodoRepository _repository = repository;
 
-  public IEnumerable<Todo> GetAll()
+  async public Task<IEnumerable<Todo>> GetAll()
   {
-    return _repository.GetAll();
+    return await _repository.GetAll();
   }
 
-  public Todo GetById(int id)
+  async public Task<Todo> GetById(int id)
   {
-    var todo = _repository.GetById(id)
+    var todo = await _repository.GetById(id)
     ?? throw new KeyNotFoundException($"Todo with id {id} was not found");
     return todo;
   }
 
-  public TodoStats GetStats()
+  async public Task<TodoStats> GetStats()
   {
-    return _repository.GetStats();
+    return await _repository.GetStats();
   }
 
-  public Todo Create(CreateTodoDto data)
+  async public Task<Todo> Create(CreateTodoDto data)
   {
     var todo = new Todo
     {
@@ -34,32 +34,32 @@ public class TodoService(ITodoRepository repository) : ITodoService
       IsCompleted = false
     };
 
-    return _repository.Add(todo);
+    return await _repository.Add(todo);
   }
 
-  public Todo Update(int id, UpdateTodoDto data)
+  async public Task<Todo> Update(int id, UpdateTodoDto data)
   {
-    var todo = GetById(id) ?? throw new KeyNotFoundException("Todo not found");
+    var todo = await GetById(id) ?? throw new KeyNotFoundException("Todo not found");
 
     todo.Title = data.Title ?? todo.Title;
     todo.IsCompleted = data.IsCompleted ?? todo.IsCompleted;
 
-    _repository.Update(todo);
+    await _repository.Update(todo);
     return todo;
   }
 
-  public Todo ToggleCompletion(int id)
+  async public Task<Todo> ToggleCompletion(int id)
   {
-    var todo = GetById(id) ?? throw new KeyNotFoundException("Todo not found");
+    var todo = await GetById(id) ?? throw new KeyNotFoundException("Todo not found");
     todo.IsCompleted = !todo.IsCompleted;
     return todo;
   }
 
-  public void Delete(int id)
+  async public Task Delete(int id)
   {
-    if (GetById(id) == null)
+    if (await GetById(id) == null)
       throw new KeyNotFoundException("Todo not found");
 
-    _repository.Delete(id);
+    await _repository.Delete(id);
   }
 }

@@ -5,11 +5,11 @@ namespace backend.Services;
 
 public interface ITodoService
 {
-  IEnumerable<Todo> GetAll();
-  Todo GetById(int id);
-  TodoStats GetStats();
-  Todo Create(CreateTodoDto data);
-  Todo Update(int id, UpdateTodoDto data);
-  Todo ToggleCompletion(int id);
-  void Delete(int id);
+  Task<IEnumerable<Todo>> GetAll();
+  Task<Todo> GetById(int id);
+  Task<TodoStats> GetStats();
+  Task<Todo> Create(CreateTodoDto data);
+  Task<Todo> Update(int id, UpdateTodoDto data);
+  Task<Todo> ToggleCompletion(int id);
+  Task Delete(int id);
 }
