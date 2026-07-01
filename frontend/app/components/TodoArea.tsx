@@ -43,7 +43,7 @@ export function TodoArea() {
       const todo = await createTodo(title.toString());
       setTodoTitle("");
       setRequestState({status: 'ok'});
-      setTodos(prev => ([...prev, todo]));
+      setTodos(prev => ([todo, ...prev]));
     } catch (error: any) {
      setRequestState({status: 'error', message: `Couldn't create task: ${error.message}`});
     }
