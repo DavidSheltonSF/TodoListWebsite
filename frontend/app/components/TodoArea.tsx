@@ -27,7 +27,7 @@ export function TodoArea() {
       setRequestState({status: 'ok'})
     } catch (error: any) {
       console.log(error)
-      setRequestState({status: 'error', message: error.message});
+      setRequestState({status: 'error', message: `Couldn't loas tasks: ${error.message}`});
     }
   }
    loadTodos();
@@ -45,7 +45,7 @@ export function TodoArea() {
       setRequestState({status: 'ok'});
       setTodos(prev => ([...prev, todo]));
     } catch (error: any) {
-      setRequestState({status: 'error', message: error.message});
+     setRequestState({status: 'error', message: `Couldn't create task: ${error.message}`});
     }
     
   }
@@ -60,7 +60,7 @@ export function TodoArea() {
     } catch(error: any) {
       console.log(error)
       setTodos(copy)
-      setRequestState({status: 'error', message: error.message});
+     setRequestState({status: 'error', message: `Couldn't delete task: ${error.message}`});
       return false;
     }
   }
@@ -74,7 +74,7 @@ export function TodoArea() {
     } catch(error: any) {
       console.log(error)
       setTodos(copy)
-      setRequestState({status: 'error', message: error.message});
+      setRequestState({status: 'error', message: `Couldn't update task: ${error.message}`});
       return false;
     }
   }
