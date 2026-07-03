@@ -12,6 +12,7 @@ import { createTodo } from "../services/createTodo";
 import { toggleTodo } from "../services/toggleTodo";
 import { TodoFilterValue } from "../types/TodoFilterValue";
 import { TodoFilter } from "./TodoFilter";
+import { Button } from "./Button";
 
 export function TodoArea() {
   const [todos, setTodos] = useState<Todo[]>([]);
@@ -112,16 +113,16 @@ export function TodoArea() {
         value={todoTitle} 
         onChange={(e) => setTodoTitle(e.target.value)} 
         name='todoTitle' type="text" className="bg-color-gray-dark w-full rounded-md p-[8px] border border-[var(--color-gray)] focus:border-[var(--color-green)] transition-[border] duration-300"/>
-        <button type="submit" className="p-[8px] bg-color-green rounded-md cursor-pointer hover:brightness-110 transition-[filter] duration-300 ">
+        <Button type="submit" className="p-[8px] bg-color-green">
           <AddIcon className="stroke-black size-[24px]"/>
-        </button>
+        </Button>
       </form>
       <TodoList 
       todos={filterValue === "all" ? todos : todosFiltered} 
       todoFilterValue={filterValue}
       onDelete={handleDelete} 
       onToggleCompletion={handleToggleTodo}/>
-      <button className="py-[8px] bg-color-green-dark text-green rounded-md cursor-pointer hover:brightness-110 transition-[filter] duration-300" onClick={() => setPage((prev) => prev + 1)}>Load More</button>
+      <Button className="bg-color-green-dark text-green" onClick={() => setPage((prev) => prev + 1)}>Load More</Button>
      </div>
   </div>
 }
