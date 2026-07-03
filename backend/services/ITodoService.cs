@@ -5,7 +5,7 @@ namespace backend.Services;
 
 public interface ITodoService
 {
-  Task<IEnumerable<Todo>> GetAll();
+  Task<IEnumerable<Todo>> GetAll(int page, int pageSize);
   Task<Todo> GetById(int id);
   Task<TodoStats> GetStats();
   Task<Todo> Create(CreateTodoDto data);

@@ -11,9 +11,12 @@ public class TodoController(ITodoService todoService) : ControllerBase
   private readonly ITodoService _service = todoService;
 
   [HttpGet]
-  async public Task<IActionResult> GetAll()
+  async public Task<IActionResult> GetAll(
+    [FromQuery] int page = 1,
+    [FromQuery] int pageSize = 10
+  )
   {
-    return Ok(await _service.GetAll());
+    return Ok(await _service.GetAll(page, pageSize));
   }
 
   [HttpGet("{id}")]

@@ -9,9 +9,9 @@ public class TodoService(ITodoRepository repository) : ITodoService
 {
   private readonly ITodoRepository _repository = repository;
 
-  async public Task<IEnumerable<Todo>> GetAll()
+  async public Task<IEnumerable<Todo>> GetAll(int page, int pageSize)
   {
-    return await _repository.GetAll();
+    return await _repository.GetAll(page, pageSize);
   }
 
   async public Task<Todo> GetById(int id)
