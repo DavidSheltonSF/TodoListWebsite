@@ -17,13 +17,14 @@ export function TodoArea() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [todoTitle, setTodoTitle] = useState("");
   const [requestState, setRequestState] = useState<RequestState>({status: 'loading'});
-  const [filterValue, setFilterValue] = useState<TodoFilterValue>("all")
+  const [filterValue, setFilterValue] = useState<TodoFilterValue>("all");
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
    async function loadTodos(){
      try {
-      const data = await getTodos();
-      setTodos(data);
+      const data = await getTodos(page, 10);
+      setTodos((prev) => ([...prev, ...data]));
       setRequestState({status: 'ok'})
     } catch (error: any) {
       console.log(error)
@@ -31,7 +32,7 @@ export function TodoArea() {
     }
   }
    loadTodos();
-  }, []);
+  }, [page]);
 
   async function handleCreateTodo(e: any){
     try {
@@ -83,14 +84,14 @@ export function TodoArea() {
     }
   }
 
-  const sortedTodos = todos.slice().sort((a, b) => {
-    const aDate = new Date(a.createdAt)
-    const bDate = new Date(b.createdAt)
-    return bDate.getTime() - aDate.getTime();
-  })
+  // const sortedTodos = todos.slice().sort((a, b) => {
+  //   const aDate = new Date(a.createdAt)
+  //   const bDate = new Date(b.createdAt)
+  //   return bDate.getTime() - aDate.getTime();
+  // })
 
-  const todoDone = sortedTodos.filter((todo) => todo.isCompleted === true);
-  const todoRemaining = sortedTodos.filter((todo) => todo.isCompleted === false);
+  const todoDone = todos.filter((todo) => todo.isCompleted === true);
+  const todoRemaining = todos.filter((todo) => todo.isCompleted === false);
   const todosFiltered = filterValue === 'done' ? todoDone : todoRemaining;
 
  return <div className="flex flex-col gap-[24px] w-full">
@@ -116,10 +117,11 @@ export function TodoArea() {
         </button>
       </form>
       <TodoList 
-      todos={filterValue === "all" ? sortedTodos : todosFiltered} 
+      todos={filterValue === "all" ? todos : todosFiltered} 
       todoFilterValue={filterValue}
       onDelete={handleDelete} 
       onToggleCompletion={handleToggleTodo}/>
+      <button className="py-[8px] bg-color-green-dark text-green rounded-md cursor-pointer hover:brightness-110 transition-[filter] duration-300" onClick={() => setPage((prev) => prev + 1)}>Load More</button>
      </div>
   </div>
 }
