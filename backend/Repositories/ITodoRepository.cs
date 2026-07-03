@@ -5,7 +5,7 @@ using backend.Models;
 
 public interface ITodoRepository
 {
-  Task<IEnumerable<Todo>> GetAll();
+  Task<IEnumerable<Todo>> GetAll(int page, int pageSize);
   Task<Todo?> GetById(int id);
   Task<TodoStats> GetStats();
   Task<Todo> Add(Todo todo);

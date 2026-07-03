@@ -9,9 +9,13 @@ public class TodoRepository(TodoDbContext context) : ITodoRepository
 {
   private readonly TodoDbContext _context = context;
 
-  async public Task<IEnumerable<Todo>> GetAll()
+  async public Task<IEnumerable<Todo>> GetAll(int page, int pageSize)
   {
-    return await _context.Todos.ToListAsync();
+    return await _context.Todos
+    .OrderByDescending((todo) => todo.CreatedAt)
+    .Skip((page - 1) * pageSize)
+    .Take(pageSize)
+    .ToListAsync();
   }
 
  async public Task<Todo?> GetById(int id)
