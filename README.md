@@ -1,5 +1,8 @@
 # Sistema de gerenciamento de tarefas (Todo list) 
 
+[Link do deploy](https://todolistwebsite-frontend.onrender.com/)
+
+**OBS:** 50s para carregar o front e 50s para carregar a API pois o deploy utiliza serviço gratuito.
 
 ●​ Apliquei o padrão Optimistic UI para melhor fluidez e experiência do usuário
 
