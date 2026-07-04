@@ -5,13 +5,12 @@ using backend.Dtos;
 using backend.Models;
 using backend.Types;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Extensions;
 
 public class TodoRepository(TodoDbContext context) : ITodoRepository
 {
   private readonly TodoDbContext _context = context;
 
-  async public Task<IEnumerable<Todo>> GetAll(int page, int pageSize, TodoFilter todoFilter)
+  async public Task<Page<Todo>> GetAll(int page, int pageSize, TodoFilter todoFilter)
   {
 
     IQueryable<Todo> query = _context.Todos;
@@ -30,11 +29,21 @@ public class TodoRepository(TodoDbContext context) : ITodoRepository
         break;
     }
 
-    return await query
+    var todos = await query
     .OrderByDescending((todo) => todo.CreatedAt)
     .Skip((page - 1) * pageSize)
     .Take(pageSize)
     .ToListAsync();
+
+    var totalItems = await _context.Todos.CountAsync();
+    var totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+
+    return new Page<Todo>(
+        todos,
+        page,
+        totalPages,
+        page < totalPages ? page + 1 : 0
+      );
   }
 
  async public Task<Todo?> GetById(int id)

@@ -6,7 +6,7 @@ using backend.Types;
 
 public interface ITodoRepository
 {
-  Task<IEnumerable<Todo>> GetAll(int page, int pageSize, TodoFilter todoFilter);
+  Task<Page<Todo>> GetAll(int page, int pageSize, TodoFilter todoFilter);
   Task<Todo?> GetById(int id);
   Task<TodoStats> GetStats();
   Task<Todo> Add(Todo todo);
