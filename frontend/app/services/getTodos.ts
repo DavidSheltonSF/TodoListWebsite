@@ -1,11 +1,13 @@
 import { API_URL } from "@/config/ApiUrl";
 import { Todo } from "../types/Todo";
+import { TodoFilterValue } from "../types/TodoFilterValue";
 
-export async function getTodos(page: number, pageSize: number): Promise<Todo[]>{
+export async function getTodos(page: number, pageSize: number, todoFilter: TodoFilterValue): Promise<Todo[]>{
 
   const queryParams =  new URLSearchParams({
     page: String(page) ?? '',
-    pageSice: String(pageSize ) || ''
+    pageSice: String(pageSize ) || '',
+    todoFilter: todoFilter
   });
   
   queryParams.set("page", String(page));
