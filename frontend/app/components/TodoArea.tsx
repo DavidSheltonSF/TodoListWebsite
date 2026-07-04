@@ -13,24 +13,31 @@ import { toggleTodo } from "../services/toggleTodo";
 import { TodoFilterValue } from "../types/TodoFilterValue";
 import { TodoFilter } from "./TodoFilter";
 import { Button } from "./Button";
+import { Page } from "../types/Page";
 
 export function TodoArea() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [todoTitle, setTodoTitle] = useState("");
   const [requestState, setRequestState] = useState<RequestState>({status: 'loading'});
   const [filterValue, setFilterValue] = useState<TodoFilterValue>("all");
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState<Page<Todo>>({
+    items: [],
+    currentPage: 1,
+    totalPages: 1,
+    nextPage: 1
+  });
 
   useEffect(() => {
    async function fetchTodos(){
      try {
-      const replaceList = page === 1
-      const data = await getTodos(page, 10, filterValue);
-        const sortedTodos = data.slice().sort((a, b) => {
-        const aDate = new Date(a.createdAt)
-        const bDate = new Date(b.createdAt)
-        return bDate.getTime() - aDate.getTime();
-      });
+      const replaceList = page?.currentPage === 1;
+      const pageResponse = await getTodos(page.currentPage, 10, filterValue);
+      setPage(pageResponse)
+      const sortedTodos = pageResponse.items.slice().sort((a, b) => {
+      const aDate = new Date(a.createdAt)
+      const bDate = new Date(b.createdAt)
+      return bDate.getTime() - aDate.getTime();
+    });
 
       setTodos((prev) => replaceList ? sortedTodos : ([...prev, ...sortedTodos]));
       setRequestState({status: 'ok'})
@@ -40,16 +47,16 @@ export function TodoArea() {
     }
   }
    fetchTodos();
-  }, [page, filterValue]);
+  }, [page.currentPage, filterValue]);
 
 
   function handleLoadMore(){
-    setPage((prev) => prev + 1);
+    setPage((prev) => ({...prev, currentPage: prev.currentPage + 1}));
   }
 
   function handleChangeFilter(value: TodoFilterValue){
     setFilterValue(value)
-    setPage(1);
+    setPage((prev) => ({...prev, currentPage: 1}));
   }
 
   async function handleCreateTodo(e: any){
@@ -136,7 +143,10 @@ export function TodoArea() {
       todoFilterValue={filterValue}
       onDelete={handleDelete} 
       onToggleCompletion={handleToggleTodo}/>
-      <Button className="bg-color-green-dark text-green" onClick={handleLoadMore}>Load More</Button>
+     {
+      page.nextPage > 0 
+      && <Button className="bg-color-green-dark text-green" onClick={handleLoadMore}>Load More</Button>
+     }
      </div>
   </div>
 }
