@@ -1,5 +1,7 @@
 using backend.Dtos;
+using backend.Models;
 using backend.Services;
+using backend.Types;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers;
@@ -13,10 +15,12 @@ public class TodoController(ITodoService todoService) : ControllerBase
   [HttpGet]
   async public Task<IActionResult> GetAll(
     [FromQuery] int page = 1,
-    [FromQuery] int pageSize = 10
+    [FromQuery] int pageSize = 10,
+    [FromQuery] TodoFilter todoFilter =  TodoFilter.All
   )
   {
-    return Ok(await _service.GetAll(page, pageSize));
+    Console.WriteLine(todoFilter);
+    return Ok(await _service.GetAll(page, pageSize, todoFilter));
   }
 
   [HttpGet("{id}")]
