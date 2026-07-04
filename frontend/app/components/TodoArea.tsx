@@ -14,9 +14,12 @@ import { TodoFilterValue } from "../types/TodoFilterValue";
 import { TodoFilter } from "./TodoFilter";
 import { Button } from "./Button";
 import { Page } from "../types/Page";
+import { TodoStats } from "../types/TodoStats";
+import { getTodoStats } from "../services/getTodoStats";
 
 export function TodoArea() {
   const [todos, setTodos] = useState<Todo[]>([]);
+  const [todoStats, setTodoStats] = useState<TodoStats>()
   const [todoTitle, setTodoTitle] = useState("");
   const [requestState, setRequestState] = useState<RequestState>({status: 'loading'});
   const [filterValue, setFilterValue] = useState<TodoFilterValue>("all");
@@ -46,7 +49,14 @@ export function TodoArea() {
       setRequestState({status: 'error', message: `Couldn't load tasks: ${error.message}`});
     }
   }
+
+  async function fetchTodoStats(){
+    const stats = await getTodoStats();
+    setTodoStats(stats)
+  }
+
    fetchTodos();
+   fetchTodoStats();
   }, [page.currentPage, filterValue]);
 
 
@@ -120,9 +130,9 @@ export function TodoArea() {
       <header className="flex flex-col w-full gap-">
        <h1 className="text-5xl">Todo-do</h1>
        <TaskStats>
-        <TaskStats.Item label="Todos" value={todos.length}/>
-        <TaskStats.Item label="Done" value={0} highlight/>
-        <TaskStats.Item label="Remaining" value={0}/>
+        <TaskStats.Item label="Todos" value={todoStats?.all ?? 0}/>
+        <TaskStats.Item label="Done" value={todoStats?.done ?? 0} highlight/>
+        <TaskStats.Item label="Remaining" value={todoStats?.remaining ?? 0}/>
        </TaskStats>
        <div className="border-divider"></div>
       <RequestStatusBar requestState={requestState}/>
