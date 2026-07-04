@@ -2,6 +2,7 @@ using System.Reflection.Metadata.Ecma335;
 using backend.Dtos;
 using backend.Models;
 using backend.Repositories;
+using backend.Types;
 
 namespace backend.Services;
 
@@ -9,9 +10,9 @@ public class TodoService(ITodoRepository repository) : ITodoService
 {
   private readonly ITodoRepository _repository = repository;
 
-  async public Task<IEnumerable<Todo>> GetAll(int page, int pageSize)
+  async public Task<IEnumerable<Todo>> GetAll(int page, int pageSize, TodoFilter todoFilter)
   {
-    return await _repository.GetAll(page, pageSize);
+    return await _repository.GetAll(page, pageSize, todoFilter);
   }
 
   async public Task<Todo> GetById(int id)

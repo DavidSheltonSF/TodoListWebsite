@@ -1,11 +1,12 @@
 using backend.Dtos;
 using backend.Models;
+using backend.Types;
 
 namespace backend.Services;
 
 public interface ITodoService
 {
-  Task<IEnumerable<Todo>> GetAll(int page, int pageSize);
+  Task<IEnumerable<Todo>> GetAll(int page, int pageSize, TodoFilter todoFilter);
   Task<Todo> GetById(int id);
   Task<TodoStats> GetStats();
   Task<Todo> Create(CreateTodoDto data);
