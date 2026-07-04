@@ -22,18 +22,35 @@ export function TodoArea() {
   const [page, setPage] = useState(1);
 
   useEffect(() => {
-   async function loadTodos(){
+   async function fetchTodos(){
      try {
-      const data = await getTodos(page, 10);
-      setTodos((prev) => ([...prev, ...data]));
+      const replaceList = page === 1
+      const data = await getTodos(page, 10, filterValue);
+        const sortedTodos = data.slice().sort((a, b) => {
+        const aDate = new Date(a.createdAt)
+        const bDate = new Date(b.createdAt)
+        return bDate.getTime() - aDate.getTime();
+      });
+
+      setTodos((prev) => replaceList ? sortedTodos : ([...prev, ...sortedTodos]));
       setRequestState({status: 'ok'})
     } catch (error: any) {
       console.log(error)
       setRequestState({status: 'error', message: `Couldn't load tasks: ${error.message}`});
     }
   }
-   loadTodos();
-  }, [page]);
+   fetchTodos();
+  }, [page, filterValue]);
+
+
+  function handleLoadMore(){
+    setPage((prev) => prev + 1);
+  }
+
+  function handleChangeFilter(value: TodoFilterValue){
+    setFilterValue(value)
+    setPage(1);
+  }
 
   async function handleCreateTodo(e: any){
     try {
@@ -85,29 +102,26 @@ export function TodoArea() {
     }
   }
 
-  // const sortedTodos = todos.slice().sort((a, b) => {
-  //   const aDate = new Date(a.createdAt)
-  //   const bDate = new Date(b.createdAt)
-  //   return bDate.getTime() - aDate.getTime();
-  // })
+  const sortedTodos = todos
 
-  const todoDone = todos.filter((todo) => todo.isCompleted === true);
-  const todoRemaining = todos.filter((todo) => todo.isCompleted === false);
-  const todosFiltered = filterValue === 'done' ? todoDone : todoRemaining;
+  const doneTodos = sortedTodos.filter((todo) => todo.isCompleted);
+  const remainingTodos = sortedTodos.filter((todo) => !todo.isCompleted);
+  const filteredTodos = filterValue === 'done' ? doneTodos: remainingTodos
+
 
  return <div className="flex flex-col gap-[24px] w-full">
       <header className="flex flex-col w-full gap-">
        <h1 className="text-5xl">Todo-do</h1>
        <TaskStats>
         <TaskStats.Item label="Todos" value={todos.length}/>
-        <TaskStats.Item label="Done" value={todoDone.length} highlight/>
-        <TaskStats.Item label="Remaining" value={todoRemaining.length}/>
+        <TaskStats.Item label="Done" value={0} highlight/>
+        <TaskStats.Item label="Remaining" value={0}/>
        </TaskStats>
        <div className="border-divider"></div>
       <RequestStatusBar requestState={requestState}/>
      </header>
      <div className="flex flex-col gap-[24px]">
-      <TodoFilter selectedValue={filterValue} updateFilter={(value) => setFilterValue(value)}/>
+      <TodoFilter selectedValue={filterValue} updateFilter={handleChangeFilter}/>
       <form className="flex gap-[16px]" onSubmit={handleCreateTodo}>
         <input 
         value={todoTitle} 
@@ -118,11 +132,11 @@ export function TodoArea() {
         </Button>
       </form>
       <TodoList 
-      todos={filterValue === "all" ? todos : todosFiltered} 
+      todos={filterValue === 'all' ? todos : filteredTodos} 
       todoFilterValue={filterValue}
       onDelete={handleDelete} 
       onToggleCompletion={handleToggleTodo}/>
-      <Button className="bg-color-green-dark text-green" onClick={() => setPage((prev) => prev + 1)}>Load More</Button>
+      <Button className="bg-color-green-dark text-green" onClick={handleLoadMore}>Load More</Button>
      </div>
   </div>
 }
