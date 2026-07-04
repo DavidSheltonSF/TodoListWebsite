@@ -3,15 +3,34 @@ namespace backend.Repositories;
 using backend.Database;
 using backend.Dtos;
 using backend.Models;
+using backend.Types;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Extensions;
 
 public class TodoRepository(TodoDbContext context) : ITodoRepository
 {
   private readonly TodoDbContext _context = context;
 
-  async public Task<IEnumerable<Todo>> GetAll(int page, int pageSize)
+  async public Task<IEnumerable<Todo>> GetAll(int page, int pageSize, TodoFilter todoFilter)
   {
-    return await _context.Todos
+
+    IQueryable<Todo> query = _context.Todos;
+
+    switch (todoFilter)
+    {
+      case TodoFilter.Done:
+        query = query.Where((todo) => todo.IsCompleted);
+        break;
+
+      case TodoFilter.Remaining:
+        query = query.Where((todo) => !todo.IsCompleted);
+        break;
+
+      default:
+        break;
+    }
+
+    return await query
     .OrderByDescending((todo) => todo.CreatedAt)
     .Skip((page - 1) * pageSize)
     .Take(pageSize)
