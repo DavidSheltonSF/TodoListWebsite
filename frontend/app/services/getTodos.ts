@@ -6,13 +6,12 @@ import { Page } from "../types/Page";
 export async function getTodos(page: number, pageSize: number, todoFilter: TodoFilterValue): Promise<Page<Todo>>{
 
   const queryParams =  new URLSearchParams({
-    page: String(page) ?? '',
-    pageSice: String(pageSize ) || '',
+    page: String(page),
+    pageSize: String(pageSize),
     todoFilter: todoFilter
   });
-  
   queryParams.set("page", String(page));
-
+  
   const response = await fetch(`${API_URL}/todos?${queryParams.toString()}`);
   const json = await response.json();
   return json;
