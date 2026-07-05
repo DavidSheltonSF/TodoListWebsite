@@ -31,18 +31,21 @@ export function TodoArea() {
   });
 
   useEffect(() => {
-   async function fetchTodos(){
+   async function fetchData(){
      try {
       const replaceList = page?.currentPage === 1;
-      const pageResponse = await getTodos(page.currentPage, 10, filterValue);
-      setPage(pageResponse)
-      const sortedTodos = pageResponse.items.slice().sort((a, b) => {
+      const [todosPage, stats] = await Promise.all(
+        [
+          getTodos(page.currentPage, 10, filterValue), getTodoStats()
+        ])
+      const sortedTodos = todosPage.items.slice().sort((a, b) => {
       const aDate = new Date(a.createdAt)
       const bDate = new Date(b.createdAt)
       return bDate.getTime() - aDate.getTime();
     });
 
       setTodos((prev) => replaceList ? sortedTodos : ([...prev, ...sortedTodos]));
+      setTodoStats(stats);
       setRequestState({status: 'ok'})
     } catch (error: any) {
       console.log(error)
@@ -50,13 +53,8 @@ export function TodoArea() {
     }
   }
 
-  async function fetchTodoStats(){
-    const stats = await getTodoStats();
-    setTodoStats(stats)
-  }
+   fetchData();
 
-   fetchTodos();
-   fetchTodoStats();
   }, [page.currentPage, filterValue]);
 
 
