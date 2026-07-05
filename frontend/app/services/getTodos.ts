@@ -10,7 +10,6 @@ export async function getTodos(page: number, pageSize: number, todoFilter: TodoF
     pageSize: String(pageSize),
     todoFilter: todoFilter
   });
-  queryParams.set("page", String(page));
   
   const response = await fetch(`${API_URL}/todos?${queryParams.toString()}`);
   const json = await response.json();
