@@ -12,6 +12,11 @@ export async function getTodos(page: number, pageSize: number, todoFilter: TodoF
   });
   
   const response = await fetch(`${API_URL}/todos?${queryParams.toString()}`);
-  const json = await response.json();
-  return json;
+
+  if(!response.ok){
+    const error = await response.json();
+    throw new Error(error.title);
+  }
+ 
+  return response.json();
 }
