@@ -44,6 +44,7 @@ export function TodoArea() {
       return bDate.getTime() - aDate.getTime();
     });
 
+      setPage(todosPage);
       setTodos((prev) => replaceList ? sortedTodos : ([...prev, ...sortedTodos]));
       setTodoStats(stats);
       setRequestState({status: 'ok'})
@@ -123,8 +124,7 @@ export function TodoArea() {
   const remainingTodos = sortedTodos.filter((todo) => !todo.isCompleted);
   const filteredTodos = filterValue === 'done' ? doneTodos: remainingTodos
 
-
- return <div className="flex flex-col gap-[24px] w-full">
+  return <div className="flex flex-col gap-[24px] w-full">
       <header className="flex flex-col w-full gap-">
        <h1 className="text-5xl">Todo-do</h1>
        <TaskStats>
