@@ -56,7 +56,7 @@ export function TodoArea() {
 
    fetchData();
 
-  }, [page.currentPage, filterValue]);
+  }, [page.currentPage, filterValue, todoStats]);
 
 
   function handleLoadMore(){
