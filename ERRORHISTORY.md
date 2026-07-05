@@ -21,3 +21,27 @@ As a result, when `getTodosStats` failed, the browser emitted an `Unhandled Prom
 ### Resolution
 
 The data-loading logic was refactored so that both requests are awaited together, ensuring that any rejection is properly handled.
+
+
+
+## Unexpected behavior in the Load More button
+
+The Load More button should disappear when there is no next page of items.
+
+### Symptoms
+
+- The Load More button was not being hidden when there were no more pages available.
+- It was hidden only after the user clicked it.
+
+### Investigation
+
+- Checked that the server was returning `nextPage` = 2 even when there was no next page.
+- Checked that the interface was not updating the default value of the `page` state.
+
+### Root Cause
+
+`GetAll` method in `TodosRepository` was calculating `totalPages` without applying the provided filters. That incorrect value was then used to calculate the next page.
+
+### Resolution
+
+I applied the provided filters before calculating `totalPages`, ensuring that `nextPage` is calculated correctly. Also, I updated `fetchData` function to update `page` after each successful request.
