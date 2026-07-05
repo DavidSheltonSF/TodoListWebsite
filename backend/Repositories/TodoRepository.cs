@@ -35,7 +35,7 @@ public class TodoRepository(TodoDbContext context) : ITodoRepository
     .Take(pageSize)
     .ToListAsync();
 
-    var totalItems = await _context.Todos.CountAsync();
+    var totalItems = await query.CountAsync();
     var totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
 
     return new Page<Todo>(
