@@ -3,7 +3,11 @@ import { Todo } from "../types/Todo";
 import { TodoFilterValue } from "../types/TodoFilterValue";
 import { Page } from "../types/Page";
 
-export async function getTodos(page: number, pageSize: number, todoFilter: TodoFilterValue): Promise<Page<Todo>>{
+export async function getTodos(
+  page: number, 
+  pageSize: number, 
+  todoFilter: TodoFilterValue
+): Promise<Page<Todo>>{
 
   const queryParams =  new URLSearchParams({
     page: String(page),
