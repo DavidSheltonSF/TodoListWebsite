@@ -50,6 +50,16 @@ export function useTodos() {
     fetchTodos();
   } ,[currentPage, filter]);
 
+
+  function sortTodos() {
+    setTodos((prev) => prev.toSorted((a, b) => {
+      const aDate = new Date(a.createdAt);
+      const bDate = new Date(b.createdAt);
+
+      return bDate.getTime() - aDate.getTime();
+    }));
+  }
+
   function handleLoadMore(){
     setCurrentPage((prev) => prev + 1);
   }
@@ -95,12 +105,12 @@ export function useTodos() {
       }
   }
 
-
   async function handleCreateTodo(title: string){
     try {
       setRequestState({status: 'loading'});
       const todo = await createTodo(title);
       setTodos((prev) => ([...prev, todo]));
+      sortTodos();
       setRequestState({status: 'ok'});
     } catch (error: any) {
       console.log(error);
@@ -145,7 +155,6 @@ export function useTodos() {
       setTodos((prev) => prev.map((t) => t.id === id ? updatedTodo : t ));
 
       toggleStats(todo.isCompleted)
-      await new Promise((resolve) => setTimeout(resolve, 3000))
       await toggleTodo(id);
       setRequestState({status: 'ok'})
     } catch (error: any) {
