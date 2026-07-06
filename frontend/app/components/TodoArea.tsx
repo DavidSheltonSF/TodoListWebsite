@@ -103,21 +103,24 @@ export function TodoArea() {
   }
 
   function inCreaseDone(){
-    if(todoStats.remaining > 0) {
-      setTodoStats((prev) => ({...prev, done: prev.done + 1, remaining: prev.remaining - 1}));
+    setTodoStats((prev) => ({...prev, done: prev.done + 1}))  }
+
+  function decreaseDone() {
+    if(todoStats.done === 0) {
       return;
     }
-
-    setTodoStats((prev) => ({...prev, done: prev.done + 1}))
+    setTodoStats((prev) => ({...prev, done: prev.done - 1}));
   }
 
   function inCreaseRemaining() {
-    if(todoStats.done > 0) {
-      setTodoStats((prev) => ({...prev, done: prev.done - 1, remaining: prev.remaining + 1}));
+    setTodoStats((prev) => ({...prev, remaining: prev.remaining + 1}));
+  }
+
+  function decreaseRemainig() {
+    if(todoStats.remaining === 0){
       return;
     }
-
-    setTodoStats((prev) => ({...prev, remaining: prev.remaining + 1}))
+    setTodoStats((prev) => ({...prev, remaining: prev.remaining - 1}));
   }
 
   async function handleToggleTodo(id: number){
@@ -135,8 +138,10 @@ export function TodoArea() {
 
       if(wasCompleted){
         inCreaseRemaining()
+        decreaseDone()
       } else {
         inCreaseDone()
+        decreaseRemainig();
       }
 
       await toggleTodo(id);
