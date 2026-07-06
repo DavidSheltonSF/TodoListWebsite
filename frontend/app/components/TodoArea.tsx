@@ -19,7 +19,7 @@ import { getTodoStats } from "../services/getTodoStats";
 
 export function TodoArea() {
   const [todos, setTodos] = useState<Todo[]>([]);
-  const [todoStats, setTodoStats] = useState<TodoStats>()
+  const [todoStats, setTodoStats] = useState<TodoStats>({all: 0, done: 0, remaining: 0})
   const [todoTitle, setTodoTitle] = useState("");
   const [requestState, setRequestState] = useState<RequestState>({status: 'loading'});
   const [filterValue, setFilterValue] = useState<TodoFilterValue>("all");
@@ -56,7 +56,7 @@ export function TodoArea() {
 
    fetchData();
 
-  }, [page.currentPage, filterValue, todoStats]);
+  }, [page.currentPage, filterValue]);
 
 
   function handleLoadMore(){
@@ -102,12 +102,43 @@ export function TodoArea() {
     }
   }
 
+  function inCreaseDone(){
+    if(todoStats.remaining > 0) {
+      setTodoStats((prev) => ({...prev, done: prev.done + 1, remaining: prev.remaining - 1}));
+      return;
+    }
+
+    setTodoStats((prev) => ({...prev, done: prev.done + 1}))
+  }
+
+  function inCreaseRemaining() {
+    if(todoStats.done > 0) {
+      setTodoStats((prev) => ({...prev, done: prev.done - 1, remaining: prev.remaining + 1}));
+      return;
+    }
+
+    setTodoStats((prev) => ({...prev, remaining: prev.remaining + 1}))
+  }
+
   async function handleToggleTodo(id: number){
     const todoCopy = todos.find((todo) => todo.id === id);
     if(!todoCopy) return;
 
     try {
-      setTodos((prev) => prev.map((t) => (t.id === id ? {...t, isCompleted: !t.isCompleted} : t)));
+      const wasCompleted = todoCopy.isCompleted;
+
+      setTodos((prev) => prev.map((todo) => todo.id === id ? ({
+          ...todo, 
+          isCompleted: !todo.isCompleted
+        }): todo)
+      )
+
+      if(wasCompleted){
+        inCreaseRemaining()
+      } else {
+        inCreaseDone()
+      }
+
       await toggleTodo(id);
       return true;
     } catch(error: any) {
