@@ -1,12 +1,16 @@
 import { RequestState } from "../types/RequestState";
 
 interface Props {
-  requestState: RequestState;
+  requestState: RequestState | null;
 }
 
 export function RequestStatusBar({requestState}: Props){
   const errorStyles = 'border-red-soft text-red bg-color-red-dark';
   const successStyles = 'border-green-soft text-green bg-color-green-dark';
+
+  if(!requestState) {
+    return null;
+  }
 
   if(requestState.status === 'loading'){
     return <div className='flex justify-center items-center w-full rounded-md mt-[24px]
