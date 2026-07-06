@@ -121,16 +121,16 @@ export function TodoArea() {
   }
 
   async function handleToggleTodo(id: number){
-    const todoCopy = todos.find((todo) => todo.id === id);
-    if(!todoCopy) return;
+    const todo = todos.find((t) => t.id === id);
+    if(!todo) return;
 
     try {
-      const wasCompleted = todoCopy.isCompleted;
+      const wasCompleted = todo.isCompleted;
 
-      setTodos((prev) => prev.map((todo) => todo.id === id ? ({
-          ...todo, 
-          isCompleted: !todo.isCompleted
-        }): todo)
+      setTodos((prev) => prev.map((t) => t.id === id ? ({
+          ...t, 
+          isCompleted: !t.isCompleted
+        }): t)
       )
 
       if(wasCompleted){
@@ -143,7 +143,7 @@ export function TodoArea() {
       return true;
     } catch(error: any) {
       console.log(error)
-      setTodos((prev) => prev.map((t) => t.id === id ? todoCopy : t))
+      setTodos((prev) => prev.map((t) => t.id === id ? todo : t))
       setRequestState({status: 'error', message: `Couldn't update task: ${error.message}`});
       return false;
     }
