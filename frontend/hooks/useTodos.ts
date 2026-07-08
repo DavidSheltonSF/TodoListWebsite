@@ -120,7 +120,6 @@ export function useTodos() {
       increaseAll();
       inCreaseRemaining();
       setRequestState({status: 'loading'});
-      await new Promise((resolve) => setTimeout(resolve, 3000))
       const todo = await createTodo(title);
       setTodos((prev) => prev.map((t) => t.id === pendingTodo.id ? todo : t));
       sortTodos();
