@@ -7,6 +7,8 @@ import { RequestState } from "@/app/types/RequestState";
 import { Todo } from "@/app/types/Todo";
 import { TodoFilterValue } from "@/app/types/TodoFilterValue";
 import { TodoStats } from "@/app/types/TodoStats";
+import { formatDateString } from "@/lib/formatDateString";
+import { generateTempId } from "@/lib/generateTempId";
 import { useEffect, useState } from "react";
 
 export function useTodos() {
@@ -106,13 +108,27 @@ export function useTodos() {
   }
 
   async function handleCreateTodo(title: string){
+    const pendingTodo: Todo = {
+      id: generateTempId(),
+      title,
+      isCompleted: false,
+      createdAt: formatDateString(new Date().toString()),
+      status: 'pending',
+    };
     try {
+      setTodos((prev) => ([pendingTodo, ...prev]));
+      increaseAll();
+      inCreaseRemaining();
       setRequestState({status: 'loading'});
+      await new Promise((resolve) => setTimeout(resolve, 3000))
       const todo = await createTodo(title);
-      setTodos((prev) => ([...prev, todo]));
+      setTodos((prev) => prev.map((t) => t.id === pendingTodo.id ? todo : t));
       sortTodos();
       setRequestState({status: 'ok'});
     } catch (error: any) {
+      setTodos((prev) => prev.filter((t) => t.id !== pendingTodo.id));
+      decreaseAll();
+      decreaseRemainig();
       console.log(error);
       setRequestState({status: 'error', message: error.message});
     }
