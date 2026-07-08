@@ -42,12 +42,16 @@ export function TodoArea() {
      </header>
      <div className="flex flex-col gap-[24px]">
       <TodoFilter selectedValue={filter} updateFilter={handleChangeFilter}/>
-      <form className="flex gap-[16px]" onSubmit={ (e: any) => {
+      <form className="flex gap-[16px]" onSubmit={ async (e: any) => {
         e.preventDefault();
         const data = new FormData(e.currentTarget);
         const title = data.get('todoTitle');
         if(!title) return;
-         handleCreateTodo(String(title))
+
+        handleCreateTodo(String(title))
+        
+        setInputText('');
+        
       }}>
         <input 
         value={inputText} 
