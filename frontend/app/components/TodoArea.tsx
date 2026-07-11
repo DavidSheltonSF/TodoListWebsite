@@ -23,10 +23,8 @@ export function TodoArea() {
   } = useTodos();
   const [inputText, setInputText] = useState("");
 
-  const sortedTodos = todos
-
-  const doneTodos = sortedTodos.filter((todo) => todo.isCompleted);
-  const remainingTodos = sortedTodos.filter((todo) => !todo.isCompleted);
+  const doneTodos = todos.filter((todo) => todo.isCompleted);
+  const remainingTodos = todos.filter((todo) => !todo.isCompleted);
   const filteredTodos = filter === 'done' ? doneTodos: remainingTodos
 
   return <div className="flex flex-col gap-[24px] w-full">
