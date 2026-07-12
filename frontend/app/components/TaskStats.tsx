@@ -1,11 +1,8 @@
-import { PropsWithChildren } from "react";
-import { TaskStatsItem } from "./TaskStatsItem";
-
+import { PropsWithChildren } from 'react';
+import { TaskStatsItem } from './TaskStatsItem';
 
 TaskStats.Item = TaskStatsItem;
 
-export function TaskStats({children}: PropsWithChildren){
-  return <div className="flex gap-[24px] w-full py-[24px]">
-    {children}
-  </div>
+export function TaskStats({ children }: PropsWithChildren) {
+  return <div className="flex gap-[24px] w-full py-[24px]">{children}</div>;
 }
