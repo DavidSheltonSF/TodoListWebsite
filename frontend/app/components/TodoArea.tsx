@@ -23,6 +23,15 @@ export function TodoArea() {
   } = useTodos();
   const [inputText, setInputText] = useState('');
 
+  async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const data = new FormData(e.currentTarget);
+    const title = data.get('todoTitle');
+    if (!title) return;
+    handleCreateTodo(String(title));
+    setInputText('');
+  }
+
   return (
     <div className="flex flex-col gap-[24px] w-full">
       <header className="flex flex-col w-full gap-">
@@ -32,24 +41,12 @@ export function TodoArea() {
           <TaskStats.Item label="Done" value={stats?.done ?? 0} highlight />
           <TaskStats.Item label="Remaining" value={stats?.remaining ?? 0} />
         </TaskStats>
-        <div className="border-divider"/>
+        <div className="border-divider" />
         <RequestStatusBar requestState={requestState} />
       </header>
       <div className="flex flex-col gap-[24px]">
         <TodoFilter selectedValue={filter} updateFilter={handleChangeFilter} />
-        <form
-          className="flex gap-[16px]"
-          onSubmit={async (e: any) => {
-            e.preventDefault();
-            const data = new FormData(e.currentTarget);
-            const title = data.get('todoTitle');
-            if (!title) return;
-
-            handleCreateTodo(String(title));
-
-            setInputText('');
-          }}
-        >
+        <form className="flex gap-[8px]" onSubmit={handleSubmit}>
           <input
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
