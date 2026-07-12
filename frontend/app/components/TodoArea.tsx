@@ -32,7 +32,7 @@ export function TodoArea() {
           <TaskStats.Item label="Done" value={stats?.done ?? 0} highlight />
           <TaskStats.Item label="Remaining" value={stats?.remaining ?? 0} />
         </TaskStats>
-        <div className="border-divider"></div>
+        <div className="border-divider"/>
         <RequestStatusBar requestState={requestState} />
       </header>
       <div className="flex flex-col gap-[24px]">
