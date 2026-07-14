@@ -23,7 +23,7 @@ export function TodoArea() {
   } = useTodos();
   const [inputText, setInputText] = useState('');
 
-  async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
+  function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
     const title = data.get('todoTitle');
