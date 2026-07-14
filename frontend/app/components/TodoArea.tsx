@@ -7,6 +7,7 @@ import { TodoFilter } from './TodoFilter';
 import { Button } from './Button';
 import { useTodos } from '@/hooks/useTodos';
 import { RequestStatusBar } from './RequestStatusBar';
+import { TodoEmpty } from './TodoEmpty';
 
 export function TodoArea() {
   const {
@@ -58,12 +59,15 @@ export function TodoArea() {
             <AddIcon className="stroke-black size-[24px]" />
           </Button>
         </form>
-        <TodoList
-          todos={todos}
-          todoFilterValue={filter}
-          onDelete={handleDelete}
-          onToggleCompletion={handleToggleTodo}
-        />
+        {todos.length === 0 ? (
+          <TodoEmpty filter={filter} />
+        ) : (
+          <TodoList
+            todos={todos}
+            onDelete={handleDelete}
+            onToggleCompletion={handleToggleTodo}
+          />
+        )}
         {nextPage > 0 && (
           <Button
             className="bg-color-green-dark text-green"
