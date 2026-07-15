@@ -10,31 +10,22 @@ import { TodoStats } from '@/app/types/TodoStats';
 import { formatDateString } from '@/lib/formatDateString';
 import { generateTempId } from '@/lib/generateTempId';
 import { useEffect, useState } from 'react';
+import { useTodoStatistics } from './useTodoStatistics';
 
 export function useTodos() {
   const [currentPage, setCurrentPage] = useState(1);
   const [nextPage, setNextPage] = useState(0);
   const [todos, setTodos] = useState<Todo[]>([]);
   const [filter, setFilter] = useState<TodoFilterValue>('all');
-  const [stats, setStats] = useState<TodoStats>({
-    all: 0,
-    done: 0,
-    remaining: 0,
-  });
+  const { stats, incrementTodos, decrementTodos, toggleCompletionStats } =
+    useTodoStatistics();
   const [requestState, setRequestState] = useState<RequestState | null>(null);
 
   useEffect(() => {
     async function fetchTodos() {
       try {
         setRequestState({ status: 'loading' });
-        const todosPromise = getTodos(currentPage, 10, filter);
-
-        const statsPromise = getTodoStats();
-
-        const [todosResponse, statsResponse] = await Promise.all([
-          todosPromise,
-          statsPromise,
-        ]);
+        const todosResponse = await getTodos(currentPage, 10, filter);
 
         const replace = currentPage === 1;
 
@@ -43,7 +34,7 @@ export function useTodos() {
         setTodos((prev) =>
           replace ? todosResponse.items : [...prev, ...todosResponse.items]
         );
-        setStats(statsResponse);
+
         setRequestState({ status: 'ok' });
       } catch (error: any) {
         console.log(error);
@@ -69,49 +60,6 @@ export function useTodos() {
     setCurrentPage((prev) => prev + 1);
   }
 
-  function increaseAll() {
-    setStats((prev) => ({ ...prev, all: prev.all + 1 }));
-  }
-
-  function decreaseAll() {
-    if (stats.all === 0) {
-      return;
-    }
-    setStats((prev) => ({ ...prev, all: prev.all - 1 }));
-  }
-
-  function inCreaseDone() {
-    setStats((prev) => ({ ...prev, done: prev.done + 1 }));
-  }
-
-  function decreaseDone() {
-    if (stats.done === 0) {
-      return;
-    }
-    setStats((prev) => ({ ...prev, done: prev.done - 1 }));
-  }
-
-  function inCreaseRemaining() {
-    setStats((prev) => ({ ...prev, remaining: prev.remaining + 1 }));
-  }
-
-  function decreaseRemainig() {
-    if (stats.remaining === 0) {
-      return;
-    }
-    setStats((prev) => ({ ...prev, remaining: prev.remaining - 1 }));
-  }
-
-  function toggleStats(wasCompleted: boolean) {
-    if (wasCompleted) {
-      inCreaseRemaining();
-      decreaseDone();
-    } else {
-      inCreaseDone();
-      decreaseRemainig();
-    }
-  }
-
   async function handleCreateTodo(title: string) {
     const pendingTodo: Todo = {
       id: generateTempId(),
@@ -122,8 +70,7 @@ export function useTodos() {
     };
     try {
       setTodos((prev) => [pendingTodo, ...prev]);
-      increaseAll();
-      inCreaseRemaining();
+      incrementTodos();
       setRequestState({ status: 'loading' });
       const todo = await createTodo(title);
       setTodos((prev) => prev.map((t) => (t.id === pendingTodo.id ? todo : t)));
@@ -131,8 +78,7 @@ export function useTodos() {
       setRequestState({ status: 'ok' });
     } catch (error: any) {
       setTodos((prev) => prev.filter((t) => t.id !== pendingTodo.id));
-      decreaseAll();
-      decreaseRemainig();
+      decrementTodos(false);
       console.log(error);
       setRequestState({ status: 'error', message: error.message });
     }
@@ -148,15 +94,7 @@ export function useTodos() {
       await deleteTodo(id);
       setRequestState({ status: 'ok' });
 
-      const wasCompleted = todo.isCompleted;
-
-      if (wasCompleted) {
-        decreaseDone();
-      } else {
-        decreaseRemainig();
-      }
-
-      decreaseAll();
+      decrementTodos(todo.isCompleted);
     } catch (error: any) {
       setTodos((prev) => [...prev, todo]);
       setRequestState({ status: 'error', message: error.message });
@@ -172,7 +110,7 @@ export function useTodos() {
       updatedTodo.isCompleted = !todo.isCompleted;
       setTodos((prev) => prev.map((t) => (t.id === id ? updatedTodo : t)));
 
-      toggleStats(todo.isCompleted);
+      toggleCompletionStats(todo.isCompleted);
       await toggleTodo(id);
       setRequestState({ status: 'ok' });
     } catch (error: any) {
@@ -196,11 +134,12 @@ export function useTodos() {
     );
   }
 
-  const filteredTodos = filter === 'all'
-  ? todos 
-  : filter === 'done'
-    ? todos.filter((t) => t.isCompleted)
-    : todos.filter((t) => !t.isCompleted)
+  const filteredTodos =
+    filter === 'all'
+      ? todos
+      : filter === 'done'
+        ? todos.filter((t) => t.isCompleted)
+        : todos.filter((t) => !t.isCompleted);
 
   return {
     todos: filteredTodos,
